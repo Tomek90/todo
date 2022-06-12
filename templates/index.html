@@ -1,0 +1,77 @@
+{{template "header"}}
+
+<section class="vh-200" style="background-color: #e2d5de;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-xl-12">
+
+        <div class="card" style="border-radius: 15px;">
+          <div class="card-body p-5">
+
+            <h6 class="mb-3">Todo List</h6>
+               
+                <div class="d-flex align-items-center col-12 d-flex justify-content-between border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
+                  <table>
+                  <tr>
+                    <th class="col-2">Title</th>
+                    <th class="col-3">Description</th>
+                    <th class="col-3">Date Of Expiry</th>
+                    <th class="col-2">Remove</th>
+                    <th class="col-2">Complete Percentage</th>
+                  </tr>
+                  {{ range .ToDos }}
+                  <tr>
+                    <td class="col-2">{{ .Title}}</td>
+                    <td class="col-3">{{ .Description }}</td>
+                    <td class="col-3">{{ .DateAndTimeOfExpiry }}</td>
+                    <td class="col-2">
+                      <a href="{{ .ID }}/delete" data-mdb-toggle="tooltip" title="Remove item">
+                        <i class="fas fa-times text-primary">Delete</i>
+                      </a>
+                    </td>
+                    <td class="col-2">
+                      <form action="{{ .ID }}/update" method="POST">
+                        <div class="align-items-center">
+                        <input type="number" id="percentage" name="percentage" value="{{ .CompletePercentage }}">
+                        <button type="submit" class="btn btn-primary ms-2 mt-3 btn-sm">Update</button>
+                        </div>
+                      <br>
+                      </form>
+                    </td>
+                  </tr>
+                  {{ end }}
+                  </table>
+                </div>
+            <br>
+
+            <h6>Add a new item</h6>
+            <form class="d-flex justify-content-center align-items-center mb-4" method="POST" action="">
+              <div class="form-outline flex-fill">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" class="form-control" />
+                <label for="description">Description</label>
+                <input type="text" id="description" name="description" class="form-control" />
+                <label for="dateOfExpiry">Date of Expiry</label>
+                <input type="date" id="dateOfExpiry" name="dateOfExpiry" class="form-control" />
+                <label for="percentage">Percentage of completion</label>
+                <input type="number" id="percentage" name="percentage" class="form-control" min="0" max="100"/>
+                <button type="submit" class="btn btn-primary ms-2 mt-3">Add</button>
+              </div>
+            </form>
+            <br>
+
+            {{ if .ValidationErrors}}
+              {{range .ValidationErrors}}
+              <div class="bar error">{{ .Message }}</div>
+              <br>
+              {{ end }}
+            {{ end }}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{{template "footer"}}
